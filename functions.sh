@@ -119,11 +119,29 @@ Moviments() {
 	paelegir=1
 	for n in "6" "7" "8" "9"
 	do
-	echo "$paelegir `cat Combatientes.txt | grep $1$ | cut -d " " -f $n`"
+	echo "$paelegir `cat CB.txt | grep $1$ | cut -d " " -f $n`"
 	let paelegir=$paelegir+1
 	done
 	read -p "Introduce el numero:" mov
-	echo "$mov $1" >> ataques.txt 
+	echo "$mov"
+	if [ $mov -eq 1 ]
+	then
+		movimiento=`cat CB.txt | grep $1$ | cut -d " " -f 6`
+	elif [ $mov -eq 2 ]
+	then
+		movimiento=`cat CB.txt | grep $1$ | cut -d " " -f 7`
+	elif [ $mov -eq 3 ]
+	then
+		movimiento=`cat CB.txt | grep $1$ | cut -d " " -f 8`
+	elif [ $mov -eq 4 ]
+	then	
+		movimiento=`cat CB.txt | grep $1$ | cut -d " " -f 9`
+	else
+		echo "Porfavor elije un movimiento"
+		sleep 1
+		Moviments $1
+	fi
+	echo "$movimiento $1" >> ataques.txt 
 }
 
 Espera() {
@@ -139,40 +157,141 @@ Espera() {
 }
 
 Calculo() {
-	movi1=$movi+1
-	movi2=$movi+2
-	movi3=$movi+3
-	Movimientos[$movi1]=`cat ../../Moviments.txt | grep -w ^${Movimientos[$movi]} | cut -d "-" -f 2`
-	Movimientos[$movi2]=`cat ../../Moviments.txt | grep -w ^${Movimientos[$movi]} | cut -d "-" -f 3`
-	Movimientos[$movi3]=`cat ../../Efectivitat.txt | grep ^${Movimientos[$movi3]} | grep ${Tipos[$movi]} | cut -d " " -f 3`
-	if [ ${Movimientos[$movi3]} = Muyeficaz ]
+	Movimientos0[1]=`cat ../../Moviments.txt | grep -w ^${Movimientos0[0]} | cut -d "-" -f 2`
+	Movimientos1[1]=`cat ../../Moviments.txt | grep -w ^${Movimientos1[0]} | cut -d "-" -f 2`
+	Movimientos0[2]=`cat ../../Moviments.txt | grep -w ^${Movimientos0[0]} | cut -d "-" -f 3`
+	Movimientos1[2]=`cat ../../Moviments.txt | grep -w ^${Movimientos1[0]} | cut -d "-" -f 3`
+	Movimientos0[3]=`cat ../../Efectivitat.txt | grep ^${Movimientos0[2]} | cut -d " " -f 2,3 | grep ${Tipos1[0]} | cut -d " " -f 2`
+	Movimientos1[3]=`cat ../../Efectivitat.txt | grep ^${Movimientos1[2]} | cut -d " " -f 2,3 | grep ${Tipos0[0]} | cut -d " " -f 2`
+	if [ ${Movimientos0[3]} = Muyeficaz ]
 	then
-		let danyo$movi=${Movimientos[$movi1]}*2
-	elif [ ${Movimientos[$movi3]} = Pocoeficaz ]
+		echo "Es muy eficaz"
+		let danyo0=${Movimientos0[1]}*2
+		echo "$danyo0"
+	elif [ ${Movimientos0[3]} = Pocoeficaz ]
+	then
+		echo "Es poco eficaz"	
+		let danyo0=${Movimientos0[1]}/2
+		echo "$danyo0"
+	elif [ ${Movimientos0[3]} = Inmune ]
+	then
+		echo "Es inmune"	
+		let danyo0=${Movimientos0[1]}*0
+		echo "$danyo0"
+	else
+		echo "Es normal"	
+		danyo0=${Movimientos0[1]}
+		echo "$danyo0"
+	fi
+	if [ ${Movimientos1[3]} = Muyeficaz ]
+	then
+		echo "Es muy eficaz"
+		let danyo1=${Movimientos1[1]}*2
+		echo "$danyo1"
+	elif [ ${Movimientos1[3]} = Pocoeficaz ]
+	then
+		echo "Es poco eficaz"	
+		let danyo1=${Movimientos1[1]}/2
+		echo "$danyo1"
+	elif [ ${Movimientos1[3]} = Inmune ]
 	then	
-		let danyo$movi=${Movimientos[$movi1]}/2
-	elif [ ${Movimientos[$movi3]} = Inmune ]
-	then	
-		let danyo$movi=${Movimientos[$movi1]}*0
-	else	
-		danyo$movi=${Movimientos[$movi1]}
+		echo "Es inmune"
+		let danyo1=${Movimientos1[1]}*0
+		echo "$danyo1"
+	else
+		echo "Es normal"	
+		danyo1=${Movimientos1[1]}
+		echo "$danyo1"
+	fi
+}
+
+Daño0() {
+	awk '$10==Nom{$3-=danyo}1' Nom=${Tipos1[1]} danyo=$danyo0 CB.txt >file.txt
+			mv file.txt CB.txt
+	compr=`cat CB.txt | grep -w $usu$ | cut -d " " -f 3`
+	echo "$compr"
+	if [ $compr -lt 0 ]
+	then
+		zero=0
+		echo "TE MENOS DE 0"
+		awk '$10==Nom{$3=zero}1' Nom=${Tipos1[1]} zero=$zero CB.txt >file.txt
+			mv file.txt CB.txt
 	fi
 }
 
 Daño1() {
-	awk '$10==Nom{$3-=danyo}1' Nom=${Tipos[5]} danyo=$danyo0 Combatientes.txt >file.txt
-			mv file.txt Combatientes.txt
-}
-
-Daño2() {
-	awk '$10==Nom{$3-=danyo}1' Nom=${Tipos[1]} danyo=$danyo4 Combatientes.txt >file.txt
-			mv file.txt Combatientes.txt
+	awk '$10==Nom{$3-=danyo}1' Nom=${Tipos0[1]} danyo=$danyo1 CB.txt >file.txt
+			mv file.txt CB.txt
+	compr=`cat CB.txt | grep -w $admin$ | cut -d " " -f 3`
+	echo "$compr"
+	if [ $compr -lt 0 ]
+	then
+		zero=0
+		echo "TE MENOS DE 0"
+		awk '$10==Nom{$3=zero}1' Nom=${Tipos0[1]} zero=$zero CB.txt >file.txt
+			mv file.txt CB.txt
+	fi
 }
 Muerte() {
-	posmu=`cat Combatientes.txt | cut -d " " -f 3 | grep -w 0`
-	if [ -n "$posmu"]
+	posmu=`cat CB.txt | cut -d " " -f 3 | grep -w 0`
+	if [ -n "$posmu" ]
 	then	
 		muerte=1
 		break
 	fi
+}
+Visual() {
+	if [ $1 = $admin ]
+	then
+		Pokeb=`cat CB.txt | grep $admin$ | cut -d " " -f 1`
+		hpb=`cat CB.txt | grep $admin$ | cut -d " " -f 3`
+		Pokef=`cat CB.txt | grep $usu$ | cut -d " " -f 1`
+		hpf=`cat CB.txt | grep $usu$ | cut -d " " -f 3`
+		at1=`cat CB.txt | grep $admin$ | cut -d " " -f 6`
+		at2=`cat CB.txt | grep $admin$ | cut -d " " -f 7`
+		at3=`cat CB.txt | grep $admin$ | cut -d " " -f 8`
+		at4=`cat CB.txt | grep $admin$ | cut -d " " -f 9`
+		nv=`cat CB.txt | grep $admin$ | cut -d " " -f 2`
+		hptot=$hptotad
+		hptota=$hptotus
+	else
+		Pokeb=`cat CB.txt | grep $usu$ | cut -d " " -f 1`
+		hpb=`cat CB.txt | grep $usu$ | cut -d " " -f 3`
+		Pokef=`cat CB.txt | grep $admin$ | cut -d " " -f 1`
+		hpf=`cat CB.txt | grep $admin$ | cut -d " " -f 3`
+		at1=`cat CB.txt | grep $usu$ | cut -d " " -f 6`
+		at2=`cat CB.txt | grep $usu$ | cut -d " " -f 7`
+		at3=`cat CB.txt | grep $usu$ | cut -d " " -f 8`
+		at4=`cat CB.txt | grep $usu$ | cut -d " " -f 9`
+		nv=`cat CB.txt | grep $admin$ | cut -d " " -f 2`
+		hptot=$hptotus
+		hptota=$hptotad
+	fi 
+	echo -n "
+
+╔═════════════════════════════════════════════════════════════════════════════╗
+║     	        					                      ║
+║         $Pokef♂   					            Nv.$nv      ║
+║	 ╔══════════════════════════════════════════════════════════════╗     ║
+║     PS ║`cat ../../Sprites/Barra/Barra$Pokef.txt | grep -w $hpf | cut -d " " -f 1,62` ║     ║
+║	 ╚══════════════════════════════════════════════════════════════╝     ║
+║		                                                   $hpf/$hptota      ║
+╚═════════════════════════════════════════════════════════════════════════════╝
+"
+cat ../../Sprites/bulbasaurfrontp
+cat ../../Sprites/bulbasaurbackp
+	echo "
+                                                                     ╔═════════════════════════════════════════════════════════════════════════════╗
+                                                                     ║     	        					                   ║
+                                                                     ║         $Pokeb♂					            Nv.5   ║
+                                                                     ║	      ╔══════════════════════════════════════════════════════════════╗     ║
+                                                                     ║     PS ║ `cat ../../Sprites/Barra/Barra$Pokeb.txt | grep -w $hpb | cut -d " " -f 1,62`║     ║
+                                                                     ║	      ╚══════════════════════════════════════════════════════════════╝     ║
+                                                                     ║		                                                        $hpb/$hptot      ║
+                                                                     ╚═════════════════════════════════════════════════════════════════════════════╝
+                                                                     ╔═════════════════════════════════════════════════════════════════════════════╗
+                                                                     ║ ¿Qué debería hacer $Pokeb ?     1.$at1     	3.$at3          
+                                                                     ║	    			      2.$at2              4.$at4    	   
+                                                                     ╚═════════════════════════════════════════════════════════════════════════════╝
+"
 }
