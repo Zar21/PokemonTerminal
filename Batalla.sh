@@ -34,6 +34,7 @@ case $conec in
 		;;
 esac
 sleep 1
+Intro
 echo "Elige tu pokémon"
 num=`ls ../../Usuarios/$1 | wc -l`
 for p in `seq $num`
@@ -41,7 +42,7 @@ do
 	poke=`ls ../../Usuarios/$1 | head -n$p | tail -1`
 	cara=`echo "$poke" | wc -c`
 	let cara=$cara-5
-	echo -n "$p"
+	echo -n "$p "
 	echo "$poke" | cut -c -$cara
 done
 read -p "Introduce su numero:" poke

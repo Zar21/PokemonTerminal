@@ -7,5 +7,5 @@ Charizard 36 124 0 10 Fuego Lanzallamas Llamarada ColaDragon AtaqueAla
 Gyarados 20 104 0 21 Agua HidroBomba Mordisco AcuaCola PulsoDragon
 Pikachu 12 43 0 800 Electrico Impactrueno Cabezazo Excabar Rayo
 Staraptor 36 107 0 50 Volador PajaroOsado Abocajarro GolpeCuerpo JuegoSucio
-Marcianito 50 135 0 68 RayoCumbia HiperRayo YoNoLoDescargoPorqueYaLoTengo NoFake
+Marcianito 50 135 0 68 Marcianito RayoCumbia HiperRayo YoNoLoDescargoPorqueYaLoTengo NoFake
 Missigno 99999999 1 0 999999 ???? RompeJuego BUGS Borro Fuera!!
