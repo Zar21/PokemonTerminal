@@ -67,8 +67,9 @@ read -s Contrasenya
 ContrasenyaReal=`cat Usuarios.txt | awk 'NF { $0=++a " " $0 }; { print }'| grep -w ^$n | cut -d " " -f 3`
 if [ "$Contrasenya" = "$ContrasenyaReal" ]
 then 
-echo "$Usuario" > UsuariLogejat.txt
-./PokeGear.sh $Usuario
+	echo "$Usuario" > UsuariLogejat.txt
+	./PokeGear.sh $Usuario
+	exit
 else
 echo "Contrasenya Incorrecta"
 ./Registro.sh 
@@ -108,34 +109,35 @@ Buscador() {
 		echo "A quien quieres unirte"
 		read eleccio
 		partida=`ls -l | tr -s " " | grep ^d | cut -d " " -f 9 | head -n$eleccio | tail -n1`
+		algu=`ls $partida | grep Nom2.txt`
+		if [ -n "$algu" ]
+		then	
+			echo "Esa partida ya esta llena"
+			clear
+			Buscador $1
+		else
 		cd $partida
 		echo "$1" > Nom2.txt
 		admin=`echo "$partida" | cut -c 10-`
 		echo "$admin y tu se han conectado"
+		fi
 }
 
 Moviments() {
-	echo "Elije tu movimiento:"
-	paelegir=1
-	for n in "6" "7" "8" "9"
-	do
-	echo "$paelegir `cat CB.txt | grep $1$ | cut -d " " -f $n`"
-	let paelegir=$paelegir+1
-	done
-	read -p "Introduce el numero:" mov
+	read -p "                                                                  Introduce el numero:" mov
 	echo "$mov"
 	if [ $mov -eq 1 ]
 	then
-		movimiento=`cat CB.txt | grep $1$ | cut -d " " -f 6`
+		movimiento=`cat CB.txt | grep $1$ | cut -d " " -f 7`
 	elif [ $mov -eq 2 ]
 	then
-		movimiento=`cat CB.txt | grep $1$ | cut -d " " -f 7`
+		movimiento=`cat CB.txt | grep $1$ | cut -d " " -f 8`
 	elif [ $mov -eq 3 ]
 	then
-		movimiento=`cat CB.txt | grep $1$ | cut -d " " -f 8`
+		movimiento=`cat CB.txt | grep $1$ | cut -d " " -f 9`
 	elif [ $mov -eq 4 ]
 	then	
-		movimiento=`cat CB.txt | grep $1$ | cut -d " " -f 9`
+		movimiento=`cat CB.txt | grep $1$ | cut -d " " -f 10`
 	else
 		echo "Porfavor elije un movimiento"
 		sleep 1
@@ -206,7 +208,7 @@ Calculo() {
 }
 
 Daño0() {
-	awk '$10==Nom{$3-=danyo}1' Nom=${Tipos1[1]} danyo=$danyo0 CB.txt >file.txt
+	awk '$11==Nom{$3-=danyo}1' Nom=${Tipos1[1]} danyo=$danyo0 CB.txt >file.txt
 			mv file.txt CB.txt
 	compr=`cat CB.txt | grep -w $usu$ | cut -d " " -f 3`
 	echo "$compr"
@@ -214,13 +216,13 @@ Daño0() {
 	then
 		zero=0
 		echo "TE MENOS DE 0"
-		awk '$10==Nom{$3=zero}1' Nom=${Tipos1[1]} zero=$zero CB.txt >file.txt
+		awk '$11==Nom{$3=zero}1' Nom=${Tipos1[1]} zero=$zero CB.txt >file.txt
 			mv file.txt CB.txt
 	fi
 }
 
 Daño1() {
-	awk '$10==Nom{$3-=danyo}1' Nom=${Tipos0[1]} danyo=$danyo1 CB.txt >file.txt
+	awk '$11==Nom{$3-=danyo}1' Nom=${Tipos0[1]} danyo=$danyo1 CB.txt >file.txt
 			mv file.txt CB.txt
 	compr=`cat CB.txt | grep -w $admin$ | cut -d " " -f 3`
 	echo "$compr"
@@ -228,7 +230,7 @@ Daño1() {
 	then
 		zero=0
 		echo "TE MENOS DE 0"
-		awk '$10==Nom{$3=zero}1' Nom=${Tipos0[1]} zero=$zero CB.txt >file.txt
+		awk '$11==Nom{$3=zero}1' Nom=${Tipos0[1]} zero=$zero CB.txt >file.txt
 			mv file.txt CB.txt
 	fi
 }
@@ -247,11 +249,12 @@ Visual() {
 		hpb=`cat CB.txt | grep $admin$ | cut -d " " -f 3`
 		Pokef=`cat CB.txt | grep $usu$ | cut -d " " -f 1`
 		hpf=`cat CB.txt | grep $usu$ | cut -d " " -f 3`
-		at1=`cat CB.txt | grep $admin$ | cut -d " " -f 6`
-		at2=`cat CB.txt | grep $admin$ | cut -d " " -f 7`
-		at3=`cat CB.txt | grep $admin$ | cut -d " " -f 8`
-		at4=`cat CB.txt | grep $admin$ | cut -d " " -f 9`
-		nv=`cat CB.txt | grep $admin$ | cut -d " " -f 2`
+		at1=`cat CB.txt | grep $admin$ | cut -d " " -f 7`
+		at2=`cat CB.txt | grep $admin$ | cut -d " " -f 8`
+		at3=`cat CB.txt | grep $admin$ | cut -d " " -f 9`
+		at4=`cat CB.txt | grep $admin$ | cut -d " " -f 10`
+		nvb=`cat CB.txt | grep $admin$ | cut -d " " -f 2`
+		nvf=`cat CB.txt | grep $usu$ | cut -d " " -f 2`
 		hptot=$hptotad
 		hptota=$hptotus
 	else
@@ -259,11 +262,12 @@ Visual() {
 		hpb=`cat CB.txt | grep $usu$ | cut -d " " -f 3`
 		Pokef=`cat CB.txt | grep $admin$ | cut -d " " -f 1`
 		hpf=`cat CB.txt | grep $admin$ | cut -d " " -f 3`
-		at1=`cat CB.txt | grep $usu$ | cut -d " " -f 6`
-		at2=`cat CB.txt | grep $usu$ | cut -d " " -f 7`
-		at3=`cat CB.txt | grep $usu$ | cut -d " " -f 8`
-		at4=`cat CB.txt | grep $usu$ | cut -d " " -f 9`
-		nv=`cat CB.txt | grep $admin$ | cut -d " " -f 2`
+		at1=`cat CB.txt | grep $usu$ | cut -d " " -f 7`
+		at2=`cat CB.txt | grep $usu$ | cut -d " " -f 8`
+		at3=`cat CB.txt | grep $usu$ | cut -d " " -f 9`
+		at4=`cat CB.txt | grep $usu$ | cut -d " " -f 10`
+		nvb=`cat CB.txt | grep $usu$ | cut -d " " -f 2`
+		nvb=`cat CB.txt | grep $admin$ | cut -d " " -f 2`
 		hptot=$hptotus
 		hptota=$hptotad
 	fi 
@@ -271,19 +275,21 @@ Visual() {
 
 ╔═════════════════════════════════════════════════════════════════════════════╗
 ║     	        					                      ║
-║         $Pokef♂   					            Nv.$nv      ║
+║         $Pokef♂   					            Nv.$nvf      ║
 ║	 ╔══════════════════════════════════════════════════════════════╗     ║
 ║     PS ║`cat ../../Sprites/Barra/Barra$Pokef.txt | grep -w $hpf | cut -d " " -f 1,62` ║     ║
 ║	 ╚══════════════════════════════════════════════════════════════╝     ║
 ║		                                                   $hpf/$hptota      ║
 ╚═════════════════════════════════════════════════════════════════════════════╝
 "
-cat ../../Sprites/bulbasaurfrontp
-cat ../../Sprites/bulbasaurbackp
+front=`echo "$Pokef"`front
+cat ../../Sprites/$front
+back=`echo "$Pokeb"`back
+cat ../../Sprites/$back
 	echo "
                                                                      ╔═════════════════════════════════════════════════════════════════════════════╗
                                                                      ║     	        					                   ║
-                                                                     ║         $Pokeb♂					            Nv.5   ║
+                                                                     ║         $Pokeb♂					            Nv.$nvb   ║
                                                                      ║	      ╔══════════════════════════════════════════════════════════════╗     ║
                                                                      ║     PS ║ `cat ../../Sprites/Barra/Barra$Pokeb.txt | grep -w $hpb | cut -d " " -f 1,62`║     ║
                                                                      ║	      ╚══════════════════════════════════════════════════════════════╝     ║

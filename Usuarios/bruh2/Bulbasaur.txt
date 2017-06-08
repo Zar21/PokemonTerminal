@@ -1,1 +1,1 @@
-Bulbasaur 5 23 0 Planta LatigoCepa Cabezazo SinMovimiento SinMovimiento bruh2
+Bulbasaur 5 62 0 65 Planta LatigoCepa Cabezazo SinMovimiento SinMovimient bruh2

@@ -391,6 +391,8 @@ echo "════════════════════════�
 read contrasenya
 echo "$nombre $contrasenya" >> Usuarios.txt
 mkdir Usuarios/$nombre
+touch Puntos/$nombre.txt
+echo "0" > Puntos/$nombre.txt
 clear
 
 #Introduce tu nombre

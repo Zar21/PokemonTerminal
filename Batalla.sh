@@ -1,10 +1,23 @@
 #!/bin/bash
 source functions.sh
-echo "$1"
-Nom=`cat UsuariLogejat.txt`
-echo "Que quieres hacer?"
-echo "1-Buscar Partida"
-echo "2-Crear Partida"
+echo -e "						\e[1;31m╔══════════════════════════════════════════╗`tput sgr0`
+		 				\e[1;31m║                \e[2;34m  PokeGear`tput sgr0`                \e[1;31m║`tput sgr0`
+	    				       \e[1;31m ║╔════════════════════════════════════════╗║`tput sgr0`
+		 				\e[1;31m║║					  ║║`tput sgr0`
+		 				\e[1;31m║║`tput sgr0`\e[100mBatalla`tput sgr0`                                 \e[1;31m║║`tput sgr0`
+		 				\e[1;31m║║`tput sgr0`\e[100mSe recomienda bajar el zoom`tput sgr0`	       \e[1;31m   ║║`tput sgr0`
+						\e[1;31m║║`tput sgr0`\e[100mQue quieres hacer`tput sgr0`       		  \e[1;31m║║`tput sgr0`
+						\e[1;31m║║`tput sgr0`\e[100m1-Buscar Partida`tput sgr0`       		  \e[1;31m║║`tput sgr0`
+						\e[1;31m║║`tput sgr0`\e[100m2-Crear Partida`tput sgr0`       		  \e[1;31m║║`tput sgr0`
+						\e[1;31m║║`tput sgr0`\e[100mB-Salir`tput sgr0`       		          \e[1;31m║║`tput sgr0`
+						\e[1;31m║║				    	  ║║
+						║║					  ║║
+						║║					  ║║
+						║╚════════════════════════════════════════╝║
+						║                    •                     ║
+						║                  •   •                   ║
+						║                    •                     ║
+						╚══════════════════════════════════════════╝`tput sgr0` "
 read conec
 case $conec in
 		1)
@@ -12,6 +25,9 @@ case $conec in
 		;;
 		2)
 		Creador $1
+		;;
+		b|B)
+		./PokeGear.sh $1
 		;;
 		*)
 		./Batalla.sh $1
@@ -45,6 +61,8 @@ admin=`echo "$partida" | cut -c 10-`
 usu=`cat Nom2.txt`
 hptotad=`cat CB.txt | grep $admin$ | cut -d " " -f 3`
 hptotus=`cat CB.txt | grep $usu$ | cut -d " " -f 3`
+velad=`cat CB.txt | grep $admin$ | cut -d " " -f 5`
+velus=`cat CB.txt | grep $usu$ | cut -d " " -f 5`
 echo "QUE EMPIEZE EL COMBATE!"
 muerte=0
 while [ $muerte = 0 ]
@@ -80,17 +98,25 @@ case $conec in
 			admin=$1
 		Movimientos0=("`cat ataques.txt | grep -w $admin$ | cut -d " " -f  1`")
 		Movimientos1=("`cat ataques.txt | grep -w $usu$ | cut -d " " -f  1`")
-		Tipos1=("`cat CB.txt | grep -w $usu$ | cut -d " " -f 5`" "`cat CB.txt | grep -w $usu$ | cut -d " " -f 10`")
-		Tipos0=("`cat CB.txt | grep -w $admin$ | cut -d " " -f 5`" "`cat CB.txt | grep -w $admin$ | cut -d " " -f 10`")
+		Tipos1=("`cat CB.txt | grep -w $usu$ | cut -d " " -f 6`" "`cat CB.txt | grep -w $usu$ | cut -d " " -f 11`")
+		Tipos0=("`cat CB.txt | grep -w $admin$ | cut -d " " -f 6`" "`cat CB.txt | grep -w $admin$ | cut -d " " -f 11`")
 		Calculo $1
-		Daño0 $1
-		echo "`cat CB.txt | grep $usu$ | cut -d " " -f 1 ` ha perdido $danyo0 de vida"
+		if [ $velad -gt $velus ]
+		then
+			Daño0 $1
+		else
+			Daño1 $1
+		fi
 		Visual $1
 		sleep 1.5
 		Muerte $1
-		Daño1 $1
+		if [ $velus -lt $velad ]
+		then
+			Daño1 $1
+		else
+			Daño0 $1
+		fi
 		clear
-		echo "`cat CB.txt | grep $admin$ | cut -d " " -f 1 ` ha perdido $danyo1 de vida"
 		Visual $1
 		sleep 1.5
 		Muerte $1
@@ -98,14 +124,21 @@ case $conec in
 		clear
 		;;
 		esac
-done 
+done
+clear 
 vidaPoke1=`cat CB.txt | grep $admin$ | cut -d " " -f 3 `
 vidaPoke2=`cat CB.txt | grep $usu$ | cut -d " " -f 3 `
 if [ $vidaPoke1 -eq 0 ]
 then
 	echo "$usu ha ganado"
+	punts=`cat ../../Puntos/$usu.txt`
+	let punts=$punts+100
+	echo "$punts" > ../../Puntos/$usu.txt
 else
 	echo "$admin ha ganado"
+	punts=`cat ../../Puntos/$admin.txt`
+	let punts=$punts+50
+	echo "$punts" > ../../Puntos/$admin.txt
 fi
 echo "Saliendo..."
 sleep 2s

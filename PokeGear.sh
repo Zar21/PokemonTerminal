@@ -5,7 +5,7 @@ echo -e "			                  \e[1;31m╔═════════════
 			                  \e[1;31m║                \e[2;34m  PokeGear`tput sgr0`                \e[1;31m║`tput sgr0`
 			                 \e[1;31m ║╔════════════════════════════════════════╗║`tput sgr0`
 			                  \e[1;31m║║					    ║║`tput sgr0`
-			                  \e[1;31m║║`tput sgr0`	          \e[100mMenú Principal`tput sgr0`	    \e[1;31m║║`tput sgr0`
+			                  \e[1;31m║║`tput sgr0`	          \e[100mMenú Principal`tput sgr0` 	    \e[1;31m║║`tput sgr0`
 			                  \e[1;31m║║`tput sgr0`					 \e[1;31m   ║║`tput sgr0`
 			                  ║║					    ║║
 			                  ║║           Pulsa \e[44m1`tput sgr0` para \e[1;34mBatalla`tput sgr0`	    ║║
@@ -17,13 +17,16 @@ echo -e "			                  \e[1;31m╔═════════════
 			                  ║║	       Pulsa \e[42m3`tput sgr0` para \e[1;32mHabilidades`tput sgr0`     ║║
 			                  ║║					    ║║
 			                  ║║	  	                            ║║
-			                  ║║	       Pulsa \e[46m4`tput sgr0` para \e[1;36mConectar`tput sgr0`        ║║
+                                	  ║║           Pulsa \e[41m4`tput sgr0` para \e[1;34mTienda`tput sgr0`          ║║
+			                  ║║					    ║║
+			                  ║║	  	                            ║║
+			                  ║║	       Pulsa \e[46m5`tput sgr0` para \e[1;36mCreditos`tput sgr0`        ║║
 			                  ║║	  	                            ║║
 			                  ║║					    ║║
-			                  ║║	       Pulsa \e[45m5`tput sgr0` para \e[1;35mAtrás`tput sgr0`           ║║
+			                  ║║	       Pulsa \e[45m6`tput sgr0` para \e[1;35mAtrás`tput sgr0`           ║║
 			                  ║║					    ║║
 			                  ║║					    ║║
-			                  ║║	       Pulsa \e[41m6`tput sgr0` para \e[1;31mSalir`tput sgr0`	    ║║
+			                  ║║	       Pulsa \e[41m7`tput sgr0` para \e[1;31mSalir`tput sgr0`	    ║║
 			                  \e[1;31m║║					    ║║
 			                  ║║					    ║║
 			                  ║║					    ║║
@@ -43,21 +46,25 @@ read n
 	;;
 	2)
 		clear
-		./pokémons.sh $1
+		./pokemons.sh $1
 	;;	
 	3)
 		clear
-		./habilidades.sh $1
+		./Movimientos/Movimientos.sh $1
 	;;
 	4)
 		clear
-		./conectar.sh $1
-	;;	
+		./Tienda.sh $1
+	;;
 	5)
 		clear
-		./Inicio.sh $1
-	;;
+		./creditos.sh $1
+	;;	
 	6)
+		clear
+		./Principal.sh $1
+	;;
+	7)
 		clear
 		exit
 	;;

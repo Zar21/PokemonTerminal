@@ -1,9 +1,11 @@
-Nom Lvl Hp Exp Tipo Mov1 Mov2 Mov3 Mov4 Entrenador
-Chimchar 5 20 0 Fuego Arañazo Ascuas SinMovimiento SinMovimiento
-Piplup 5 25 0 Agua Placaje PistolaAgua SinMovimiento SinMovimiento
-Bulbasaur 5 23 0 Planta LatigoCepa Cabezazo SinMovimiento SinMovimiento
-Caterpie 3 16 0 Bicho Placaje Chupavidas SinMovimiento SinMovimiento
-Charizard 36 124 0 Fuego Lanzallamas Llamarada ColaDragon AtaqueAla
-Gyarados 20 82 0 Agua HidroBomba Mordisco AcuaCola PulsoDragon
-Pikachu 12 43 0 Electrico Impactrueno Cabezazo Excabar Rayo
-Staraptor 36 107 0 Volador PajaroOsado Abocajarro GolpeCuerpo JuegoSucio
+Nom Lvl Hp Exp Vel Tipo Mov1 Mov2 Mov3 Mov4 Entrenador 
+Chimchar 5 50 0 100 Fuego Aranazo Ascuas SinMovimiento SinMovimiento 
+Piplup 5 75 0 34 Agua Placaje PistolaAgua SinMovimiento SinMovimiento 
+Bulbasaur 5 62 0 65 Planta LatigoCepa Cabezazo SinMovimiento SinMovimiento 
+Caterpie 3 35 0 80 Bicho Placaje Chupavidas SinMovimiento SinMovimiento 
+Charizard 36 124 0 10 Fuego Lanzallamas Llamarada ColaDragon AtaqueAla
+Gyarados 20 104 0 21 Agua HidroBomba Mordisco AcuaCola PulsoDragon
+Pikachu 12 43 0 800 Electrico Impactrueno Cabezazo Excabar Rayo
+Staraptor 36 107 0 50 Volador PajaroOsado Abocajarro GolpeCuerpo JuegoSucio
+Marcianito 50 135 0 68 RayoCumbia HiperRayo YoNoLoDescargoPorqueYaLoTengo NoFake
+Missigno 99999999 1 0 999999 ???? RompeJuego BUGS Borro Fuera!!

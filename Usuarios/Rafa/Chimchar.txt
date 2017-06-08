@@ -1,1 +1,1 @@
-Chimchar 5 20 0 Fuego Arañazo Ascuas SinMovimiento SinMovimiento Rafa
+Chimchar 5 50 0 100 Fuego Aranazo Ascuas SinMovimiento SinMovimiento Rafa
